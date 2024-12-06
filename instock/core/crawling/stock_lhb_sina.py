@@ -5,6 +5,8 @@ Date: 2022/11/19 12:00
 Desc: 新浪财经-龙虎榜
 https://vip.stock.finance.sina.com.cn/q/go.php/vInvestConsult/kind/lhb/index.phtml
 """
+from io import StringIO
+
 import pandas as pd
 import requests
 from bs4 import BeautifulSoup
@@ -100,7 +102,8 @@ def stock_lhb_ggtj_sina(recent_day: str = "30") -> pd.DataFrame:
             "p": page,
         }
         r = requests.get(url, params=params)
-        temp_df = pd.read_html(r.text)[0].iloc[0:, :]
+        temp_df = pd.read_html(StringIO(r.text))[0].iloc[0:, :]
+        # df = pd.read_html(StringIO(resp.text))
         big_df = pd.concat([big_df, temp_df], ignore_index=True)
     big_df["股票代码"] = big_df["股票代码"].astype(str).str.zfill(6)
     big_df.columns = ["股票代码", "股票名称", "上榜次数", "累积购买额", "累积卖出额", "净额", "买入席位数", "卖出席位数"]

@@ -53,7 +53,7 @@ class GetStockDataHandler(webBase.BaseHandler, ABC):
         if date is None:
             where = ""
         else:
-            where = f" WHERE `date` = '{date}'"
+            where = f" WHERE `date` = '{date}' "
 
         order_by = ""
         if web_module_data.order_by is not None:
